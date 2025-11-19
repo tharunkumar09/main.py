@@ -10,7 +10,7 @@ from datetime import datetime
 # Add src to path
 sys.path.append(str(Path(__file__).parent))
 
-from config import LOG_LEVEL, LOG_FILE, UPSTOX_ACCESS_TOKEN
+from config import LOG_LEVEL, LOG_FILE, UPSTOX_ACCESS_TOKEN, UPSTOX_SANDBOX_MODE
 from src.auth.session_manager import SessionManager
 from src.core.trading_bot import TradingBot
 
@@ -26,10 +26,17 @@ logger.add(
 
 def main():
     """Main function"""
+    mode_text = "SANDBOX (Paper Trading)" if UPSTOX_SANDBOX_MODE else "PRODUCTION (Live Trading)"
     logger.info("="*80)
     logger.info("Algorithmic Trading Bot Starting")
+    logger.info(f"Mode: {mode_text}")
     logger.info(f"Time: {datetime.now()}")
     logger.info("="*80)
+    
+    if UPSTOX_SANDBOX_MODE:
+        logger.warning("⚠️  SANDBOX MODE: All trades are simulated - No real money at risk")
+    else:
+        logger.warning("⚠️  PRODUCTION MODE: Real money trading - Use with caution!")
     
     try:
         # Initialize session manager

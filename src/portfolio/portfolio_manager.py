@@ -12,7 +12,10 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
-from config import INITIAL_CAPITAL, MAX_DAILY_LOSS_PERCENT, CIRCUIT_BREAKER_ENABLED
+from config import (
+    INITIAL_CAPITAL, MAX_DAILY_LOSS_PERCENT, CIRCUIT_BREAKER_ENABLED,
+    UPSTOX_API_BASE_URL, UPSTOX_SANDBOX_MODE
+)
 from src.auth.session_manager import SessionManager
 
 
@@ -20,9 +23,11 @@ class PortfolioManager:
     """
     Manages portfolio positions and P&L tracking
     Implements circuit breaker (kill switch) for daily loss limits
+    Supports both sandbox (paper trading) and production modes
     """
     
-    BASE_URL = "https://api.upstox.com/v2"
+    BASE_URL = UPSTOX_API_BASE_URL
+    SANDBOX_MODE = UPSTOX_SANDBOX_MODE
     
     def __init__(self, session_manager: SessionManager):
         """

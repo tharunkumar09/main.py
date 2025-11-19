@@ -16,7 +16,7 @@ sys.path.append(str(Path(__file__).parent.parent.parent))
 
 from config import (
     PRIMARY_TIMEFRAME, CONFIRMATION_TIMEFRAME, CONFIRMATION_EMA_PERIOD,
-    MARKET_OPEN_TIME, MARKET_CLOSE_TIME, PRE_MARKET_START
+    MARKET_OPEN_TIME, MARKET_CLOSE_TIME, PRE_MARKET_START, UPSTOX_SANDBOX_MODE
 )
 from src.auth.session_manager import SessionManager
 from src.market_data.data_feed import MarketDataFeed
@@ -340,7 +340,14 @@ class TradingBot:
             logger.warning("Trading bot is already running")
             return
         
-        logger.info("Starting trading bot...")
+        mode_text = "SANDBOX (Paper Trading)" if UPSTOX_SANDBOX_MODE else "PRODUCTION (Live Trading)"
+        logger.info(f"Starting trading bot in {mode_text} mode...")
+        
+        if UPSTOX_SANDBOX_MODE:
+            logger.warning("="*80)
+            logger.warning("SANDBOX MODE ENABLED - No real money will be used")
+            logger.warning("All trades are simulated for testing purposes")
+            logger.warning("="*80)
         
         # Check if market is open
         if not self._is_market_open():

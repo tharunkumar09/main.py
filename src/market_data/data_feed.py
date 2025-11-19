@@ -17,7 +17,10 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
-from config import WS_RECONNECT_DELAY, WS_HEARTBEAT_INTERVAL, INITIAL_BACKOFF_SECONDS, MAX_BACKOFF_SECONDS, BACKOFF_MULTIPLIER, MAX_RETRY_ATTEMPTS
+from config import (
+    WS_RECONNECT_DELAY, WS_HEARTBEAT_INTERVAL, INITIAL_BACKOFF_SECONDS, MAX_BACKOFF_SECONDS,
+    BACKOFF_MULTIPLIER, MAX_RETRY_ATTEMPTS, UPSTOX_WS_BASE_URL, UPSTOX_SANDBOX_MODE
+)
 from src.auth.session_manager import SessionManager
 
 
@@ -125,9 +128,11 @@ class MarketDataFeed:
     """
     Live market data feed using Upstox WebSocket API
     Implements reconnection logic with exponential backoff
+    Supports both sandbox (paper trading) and production modes
     """
     
-    WS_BASE_URL = "wss://api.upstox.com/v2/feed/market-data-feed"
+    WS_BASE_URL = UPSTOX_WS_BASE_URL
+    SANDBOX_MODE = UPSTOX_SANDBOX_MODE
     
     def __init__(self, session_manager: SessionManager, symbols: List[str], 
                  candle_callback: Optional[Callable] = None):
@@ -213,7 +218,8 @@ class MarketDataFeed:
     
     def _on_open(self, ws):
         """Handle WebSocket open"""
-        logger.info("WebSocket connection opened")
+        mode_text = "SANDBOX" if self.SANDBOX_MODE else "PRODUCTION"
+        logger.info(f"WebSocket connection opened ({mode_text} mode)")
         self.is_connected = True
         self.reconnect_attempts = 0
         self.backoff_seconds = INITIAL_BACKOFF_SECONDS

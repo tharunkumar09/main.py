@@ -17,7 +17,8 @@ sys.path.append(str(Path(__file__).parent.parent.parent))
 
 from config import (
     MAX_ORDER_SIZE, TWAP_DURATION_MINUTES, VWAP_ENABLED,
-    INITIAL_BACKOFF_SECONDS, MAX_BACKOFF_SECONDS, BACKOFF_MULTIPLIER, MAX_RETRY_ATTEMPTS
+    INITIAL_BACKOFF_SECONDS, MAX_BACKOFF_SECONDS, BACKOFF_MULTIPLIER, MAX_RETRY_ATTEMPTS,
+    UPSTOX_API_BASE_URL, UPSTOX_SANDBOX_MODE
 )
 from src.auth.session_manager import SessionManager
 
@@ -48,9 +49,11 @@ class OrderManager:
     """
     Manages order placement, modification, and cancellation
     Implements TWAP/VWAP for large order slicing
+    Supports both sandbox (paper trading) and production modes
     """
     
-    BASE_URL = "https://api.upstox.com/v2"
+    BASE_URL = UPSTOX_API_BASE_URL
+    SANDBOX_MODE = UPSTOX_SANDBOX_MODE
     
     def __init__(self, session_manager: SessionManager):
         """
@@ -156,6 +159,7 @@ class OrderManager:
             order_id = response.get('data', {}).get('order_id')
             
             if order_id:
+                mode_text = "SANDBOX" if self.SANDBOX_MODE else "PRODUCTION"
                 self.orders[order_id] = {
                     'order_id': order_id,
                     'symbol': symbol,
@@ -163,9 +167,10 @@ class OrderManager:
                     'side': side.value,
                     'type': OrderType.MARKET.value,
                     'status': 'PENDING',
-                    'timestamp': datetime.now()
+                    'timestamp': datetime.now(),
+                    'mode': mode_text
                 }
-                logger.info(f"Market order placed: {side.value} {quantity} {symbol}")
+                logger.info(f"Market order placed ({mode_text}): {side.value} {quantity} {symbol}")
             
             return response
         
