@@ -1,0 +1,35 @@
+# Core Dependencies
+python-dateutil>=2.8.2
+pytz>=2023.3
+requests>=2.31.0
+websocket-client>=1.6.4
+python-dotenv>=1.0.0
+
+# Upstox API
+upstox-python-sdk>=2.0.0
+
+# Data Processing & Analysis
+pandas>=2.0.3
+numpy>=1.24.3
+yfinance>=0.2.28
+
+# Technical Indicators
+ta-lib>=0.4.28
+pandas-ta>=0.3.14b0
+
+# Backtesting
+vectorbt>=0.25.2
+backtrader>=1.9.78.123
+
+# Visualization
+matplotlib>=3.7.2
+seaborn>=0.12.2
+plotly>=5.17.0
+
+# Utilities
+python-json-logger>=2.0.7
+schedule>=1.2.0
+
+# Testing (Optional)
+pytest>=7.4.2
+pytest-cov>=4.1.0

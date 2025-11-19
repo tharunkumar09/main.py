@@ -1,0 +1,17 @@
+[Unit]
+Description=Trading Bot Service
+After=network.target
+
+[Service]
+Type=simple
+User=your_username
+WorkingDirectory=/home/your_username/trading_bot
+Environment="PATH=/home/your_username/trading_bot/venv/bin"
+ExecStart=/home/your_username/trading_bot/venv/bin/python /home/your_username/trading_bot/main.py
+Restart=always
+RestartSec=10
+StandardOutput=append:/var/log/trading-bot/output.log
+StandardError=append:/var/log/trading-bot/error.log
+
+[Install]
+WantedBy=multi-user.target
