@@ -28,10 +28,36 @@ UPSTOX_API_SECRET = os.getenv("UPSTOX_API_SECRET", "")
 UPSTOX_REDIRECT_URI = os.getenv("UPSTOX_REDIRECT_URI", "http://localhost:3000/callback")
 UPSTOX_ACCESS_TOKEN = os.getenv("UPSTOX_ACCESS_TOKEN", "")
 
-# Upstox API URLs (sandbox uses same URLs but different app credentials)
-UPSTOX_API_BASE_URL = "https://api.upstox.com/v2"
-UPSTOX_WS_BASE_URL = "wss://api.upstox.com/v2/feed/market-data-feed"
-UPSTOX_AUTH_BASE_URL = "https://account.upstox.com"
+# Upstox API URLs
+# Note: Upstox typically uses the same API endpoints for both sandbox and production.
+# The environment (sandbox vs production) is determined by which app credentials you use.
+# However, if Upstox provides separate sandbox URLs, you can override them below.
+
+# Default URLs (same for both sandbox and production)
+UPSTOX_API_BASE_URL_DEFAULT = "https://api.upstox.com/v2"
+UPSTOX_WS_BASE_URL_DEFAULT = "wss://api.upstox.com/v2/feed/market-data-feed"
+UPSTOX_AUTH_BASE_URL_DEFAULT = "https://account.upstox.com"
+
+# Sandbox-specific URLs (if different from production)
+# Uncomment and set these if Upstox provides separate sandbox endpoints
+UPSTOX_API_BASE_URL_SANDBOX = os.getenv("UPSTOX_API_BASE_URL_SANDBOX", UPSTOX_API_BASE_URL_DEFAULT)
+UPSTOX_WS_BASE_URL_SANDBOX = os.getenv("UPSTOX_WS_BASE_URL_SANDBOX", UPSTOX_WS_BASE_URL_DEFAULT)
+UPSTOX_AUTH_BASE_URL_SANDBOX = os.getenv("UPSTOX_AUTH_BASE_URL_SANDBOX", UPSTOX_AUTH_BASE_URL_DEFAULT)
+
+# Production URLs
+UPSTOX_API_BASE_URL_PRODUCTION = os.getenv("UPSTOX_API_BASE_URL_PRODUCTION", UPSTOX_API_BASE_URL_DEFAULT)
+UPSTOX_WS_BASE_URL_PRODUCTION = os.getenv("UPSTOX_WS_BASE_URL_PRODUCTION", UPSTOX_WS_BASE_URL_DEFAULT)
+UPSTOX_AUTH_BASE_URL_PRODUCTION = os.getenv("UPSTOX_AUTH_BASE_URL_PRODUCTION", UPSTOX_AUTH_BASE_URL_DEFAULT)
+
+# Select URLs based on mode
+if UPSTOX_SANDBOX_MODE:
+    UPSTOX_API_BASE_URL = UPSTOX_API_BASE_URL_SANDBOX
+    UPSTOX_WS_BASE_URL = UPSTOX_WS_BASE_URL_SANDBOX
+    UPSTOX_AUTH_BASE_URL = UPSTOX_AUTH_BASE_URL_SANDBOX
+else:
+    UPSTOX_API_BASE_URL = UPSTOX_API_BASE_URL_PRODUCTION
+    UPSTOX_WS_BASE_URL = UPSTOX_WS_BASE_URL_PRODUCTION
+    UPSTOX_AUTH_BASE_URL = UPSTOX_AUTH_BASE_URL_PRODUCTION
 
 # Trading Configuration
 INITIAL_CAPITAL = float(os.getenv("INITIAL_CAPITAL", "100000"))  # ₹1,00,000
