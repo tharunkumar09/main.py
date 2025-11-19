@@ -15,19 +15,24 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
-from config import UPSTOX_API_KEY, UPSTOX_API_SECRET, UPSTOX_REDIRECT_URI, UPSTOX_ACCESS_TOKEN, BASE_DIR
+from config import (
+    UPSTOX_API_KEY, UPSTOX_API_SECRET, UPSTOX_REDIRECT_URI, UPSTOX_ACCESS_TOKEN,
+    UPSTOX_SANDBOX_MODE, UPSTOX_API_BASE_URL, UPSTOX_AUTH_BASE_URL, BASE_DIR
+)
 
 
 class SessionManager:
     """
     Manages Upstox API authentication and session tokens.
     Implements automatic token refresh with exponential backoff.
+    Supports both sandbox (paper trading) and production modes.
     """
     
-    BASE_URL = "https://api.upstox.com/v2"
+    BASE_URL = UPSTOX_API_BASE_URL
     TOKEN_URL = f"{BASE_URL}/login/authorization/token"
     PROFILE_URL = f"{BASE_URL}/user/profile"
     TOKEN_FILE = BASE_DIR / ".upstox_token.json"
+    SANDBOX_MODE = UPSTOX_SANDBOX_MODE
     
     def __init__(self, api_key: str = None, api_secret: str = None, 
                  redirect_uri: str = None, access_token: str = None):
@@ -92,8 +97,11 @@ class SessionManager:
         Returns:
             Authorization URL
         """
+        mode_text = "SANDBOX" if self.SANDBOX_MODE else "PRODUCTION"
+        logger.info(f"Generating authorization URL for {mode_text} mode")
+        
         auth_url = (
-            f"https://account.upstox.com/oauth/authorize?"
+            f"{UPSTOX_AUTH_BASE_URL}/oauth/authorize?"
             f"response_type=code&"
             f"client_id={self.api_key}&"
             f"redirect_uri={self.redirect_uri}"

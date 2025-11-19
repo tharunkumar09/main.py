@@ -22,10 +22,16 @@ LOGS_DIR.mkdir(exist_ok=True)
 BACKTEST_RESULTS_DIR.mkdir(exist_ok=True)
 
 # Upstox API Configuration
+UPSTOX_SANDBOX_MODE = os.getenv("UPSTOX_SANDBOX_MODE", "true").lower() == "true"  # Default to sandbox for testing
 UPSTOX_API_KEY = os.getenv("UPSTOX_API_KEY", "")
 UPSTOX_API_SECRET = os.getenv("UPSTOX_API_SECRET", "")
 UPSTOX_REDIRECT_URI = os.getenv("UPSTOX_REDIRECT_URI", "http://localhost:3000/callback")
 UPSTOX_ACCESS_TOKEN = os.getenv("UPSTOX_ACCESS_TOKEN", "")
+
+# Upstox API URLs (sandbox uses same URLs but different app credentials)
+UPSTOX_API_BASE_URL = "https://api.upstox.com/v2"
+UPSTOX_WS_BASE_URL = "wss://api.upstox.com/v2/feed/market-data-feed"
+UPSTOX_AUTH_BASE_URL = "https://account.upstox.com"
 
 # Trading Configuration
 INITIAL_CAPITAL = float(os.getenv("INITIAL_CAPITAL", "100000"))  # ₹1,00,000
