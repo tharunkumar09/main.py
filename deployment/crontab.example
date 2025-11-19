@@ -1,0 +1,12 @@
+# Trading Bot Cron Schedule
+# Starts bot at 9:14 AM IST (before market open at 9:15 AM)
+# Stops bot at 3:30 PM IST (market close)
+
+# Start bot at 9:14 AM IST (adjust timezone offset as needed)
+14 9 * * 1-5 /opt/trading-bot/deployment/trading-bot-cron.sh start
+
+# Stop bot at 3:30 PM IST
+30 15 * * 1-5 /opt/trading-bot/deployment/trading-bot-cron.sh stop
+
+# Optional: Run backtest daily at 4:00 PM
+0 16 * * 1-5 cd /opt/trading-bot && /opt/trading-bot/venv/bin/python backtest.py >> logs/backtest.log 2>&1
