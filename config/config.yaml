@@ -1,0 +1,88 @@
+# Advanced Algorithmic Trading System Configuration
+
+trading:
+  capital: 100000
+  max_daily_loss_percent: 3.0
+  risk_per_trade_percent: 1.0
+  max_positions: 5
+  trading_mode: "paper"  # paper or live
+  
+market:
+  timezone: "Asia/Kolkata"
+  open_time: "09:15"
+  close_time: "15:30"
+  pre_market_start: "09:00"
+  post_market_end: "15:45"
+
+strategy:
+  regime_detection:
+    adx_period: 14
+    adx_trending_threshold: 25
+    adx_ranging_threshold: 20
+    bb_width_period: 20
+    
+  trending_strategy:
+    rsi_period: 14
+    rsi_oversold: 30
+    rsi_overbought: 70
+    macd_fast: 12
+    macd_slow: 26
+    macd_signal: 9
+    ema_period: 200
+    
+  ranging_strategy:
+    bb_period: 20
+    bb_std: 2
+    mean_reversion_threshold: 0.95
+    
+  multi_timeframe:
+    enabled: true
+    primary_tf: "1min"
+    secondary_tf: "60min"
+    trend_ema_period: 20
+    
+risk_management:
+  atr_period: 14
+  atr_sl_multiplier: 3.0
+  atr_tsl_multiplier: 2.5
+  min_risk_reward: 2.0
+  max_correlation: 0.7
+  
+order_execution:
+  slippage_percent: 0.1
+  order_timeout_seconds: 30
+  max_retries: 3
+  twap_slices: 5
+  vwap_participation_rate: 0.1
+
+websocket:
+  reconnect_delay: 5
+  max_reconnect_attempts: 10
+  exponential_backoff_base: 2
+  ping_interval: 30
+  
+logging:
+  level: "INFO"
+  format: "{time:YYYY-MM-DD HH:mm:ss} | {level} | {message}"
+  rotation: "100 MB"
+  retention: "30 days"
+  
+backtesting:
+  start_date: "2008-01-01"
+  end_date: "2023-12-31"
+  initial_capital: 100000
+  commission: 0.0003
+  slippage: 0.001
+  
+watchlist:
+  # NIFTY 50 top stocks
+  - "RELIANCE"
+  - "TCS"
+  - "HDFCBANK"
+  - "INFY"
+  - "ICICIBANK"
+  - "HINDUNILVR"
+  - "ITC"
+  - "SBIN"
+  - "BHARTIARTL"
+  - "KOTAKBANK"

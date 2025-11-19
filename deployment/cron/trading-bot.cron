@@ -1,0 +1,20 @@
+# Algorithmic Trading Bot Cron Schedule
+# 
+# Start bot at market open (9:14 AM IST)
+# Stop bot at market close (3:31 PM IST)
+#
+# IST is UTC+5:30, so:
+# 9:14 AM IST = 3:44 AM UTC
+# 3:31 PM IST = 10:01 AM UTC
+
+# Start trading bot at 9:14 AM IST (3:44 AM UTC) on weekdays
+44 3 * * 1-5 cd /workspace && /usr/bin/python3 /workspace/src/bot.py >> /workspace/logs/cron.log 2>&1 &
+
+# Stop trading bot at 3:31 PM IST (10:01 AM UTC) on weekdays
+01 10 * * 1-5 pkill -f "python3.*bot.py" >> /workspace/logs/cron.log 2>&1
+
+# Daily log cleanup at midnight (remove logs older than 30 days)
+0 0 * * * find /workspace/logs -name "*.log" -mtime +30 -delete
+
+# Weekly performance report (Sunday at 10 AM IST = 4:30 AM UTC)
+30 4 * * 0 cd /workspace && /usr/bin/python3 /workspace/scripts/generate_report.py >> /workspace/logs/report.log 2>&1

@@ -1,0 +1,45 @@
+# Core Dependencies
+python-dotenv==1.0.0
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# Upstox API
+upstox-python-sdk==2.6.0
+websocket-client==1.6.4
+
+# Data Processing
+pandas==2.1.3
+numpy==1.26.2
+ta-lib==0.4.28
+pandas-ta==0.3.14b0
+
+# Backtesting & Analysis
+vectorbt==0.26.2
+backtrader==1.9.78.123
+yfinance==0.2.32
+
+# Visualization
+matplotlib==3.8.2
+seaborn==0.13.0
+plotly==5.18.0
+
+# Database & Logging
+sqlalchemy==2.0.23
+loguru==0.7.2
+
+# Scheduling & Automation
+schedule==1.2.0
+pytz==2023.3.post1
+
+# API & Network
+requests==2.31.0
+urllib3==2.1.0
+
+# Testing & Quality
+pytest==7.4.3
+pytest-cov==4.1.0
+black==23.11.0
+flake8==6.1.0
+
+# Performance
+numba==0.58.1
